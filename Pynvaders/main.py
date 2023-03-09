@@ -11,28 +11,36 @@ import sys
 import pygame
 from pygame.locals import *
 import GamePlay.Player
-from random import randint, seed
-
+from pathlib import Path
+import os
 
 class App:
+    _Background = None
     def __init__(self):
-        self.size = (1280, 720)
+        self.size = (1280, 981)
         self._running = True
         self._Display = None
-        self._Background = None
         self.player = None
 
     def on_init(self):
+        script_dir = Path(__file__).parent.absolute()
+        full_path = os.path.join(script_dir,"Content\heic1304c.jpg")
+        print(full_path)
+
         pygame.init()
         pygame.event.set_allowed([QUIT, KEYDOWN])
+
         self._Display = pygame.display.set_mode(self.size)
-        self._Background = pygame.image.load(r'C:\Users\loik.meylan\Documents\GitHub\Pre-TPI\Pynvaders\Content\heic1304c.jpg').convert()
-        self._Display.blit(self._Background, (0, 0))
+        self._Background = pygame.image.load(r"C:\Users\Loikm\OneDrive\Documents\GitHub\Pre-TPI\Pynvaders\Content\heic1304c.jpg")
         self.player = GamePlay.Player.Player()
 
 
     def on_loop(self):
+        self._Display.blit(self._Background, [0, 0])
+        self._Display.blit(self.player.image, self.player.rect)
         pygame.display.flip()
+
+
 
     def start_game(self):
         self.on_init()
