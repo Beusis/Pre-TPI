@@ -2,20 +2,20 @@ import sys
 import pygame
 from pygame.locals import *
 from random import randint, seed
-from enum import Enum, auto
 
 
 class Player:
     def __init__(self):
         self.speed = 0.3
         self._Display = None
-        self.sprite = pygame.image.load("./Content/main-spritesheet.png").convert()
+        self.sprite = pygame.image.load("./Content/main-spritesheet.png").convert_alpha()
         self.rect = pygame.Rect(152, 1, 21, 21)
-        self.position = pygame.Rect(349, 400, 21, 21)
+        self.position = [349, 400]
         self.handle_surface = None
         self.clipRect = None
         self.image = None
         self.clock = pygame.time.Clock()
+        self.limit = [21, 678]
 
     def on_init(self):
         self.clip()
@@ -36,8 +36,11 @@ class Player:
         dt = self.clock.tick(60)
 
         if keys[pygame.K_LEFT]:
-            # self.speed[0] = -30
             self.position[0] -= self.speed * dt
         elif keys[pygame.K_RIGHT]:
-            # self.speed[0] = 30
             self.position[0] += self.speed * dt
+
+        if self.position[0] < self.limit[0]:
+            self.position[0] = self.limit[0]
+        elif self.position[0] > self.limit[1]:
+            self.position[0] = self.limit[1]
