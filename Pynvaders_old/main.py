@@ -1,11 +1,10 @@
-# Pygame Pynvaders
+# Pygame Pynvaders_old
 #
 # Author : Loik Meylan
-# Version : 1.0
+# Version : 1.0_old
 # Date : 28.02.2023
 #
-# Implémentation du fichier principal du projet,
-# il contiendra les liaisons aux autres fichiers ainsi que le démarrage du jeux.
+# Space Invaders with pygame
 
 import sys
 import pygame
@@ -15,6 +14,7 @@ from pathlib import Path
 import os
 
 
+# The code structure is heavily inspired by pySnake.py by Julien Ithurbide
 class App:
     _Background = None
 
@@ -23,32 +23,43 @@ class App:
         self._running = True
         self._Display = None
         self.player = None
+        self.laser = None
         self.clock = pygame.time.Clock()
 
     def on_init(self):
         script_dir = Path(__file__).parent.absolute()
         full_path = os.path.join(script_dir, r"Content\back.png")
-        print(full_path)
 
         pygame.init()
         pygame.event.set_allowed([QUIT, KEYDOWN])
 
         self._Display = pygame.display.set_mode(self.size)
         self._Background = pygame.image.load(full_path)
+
+    def on_render(self):
         self.player = GamePlay.Player.Player()
+        self.laser = GamePlay.Player.LaserShot()
 
     def on_loop(self):
         self._Display.blit(self._Background, [0, 0])
-        self._Display.blit(self.player.image, self.player.position)
+        self._Display.blit(self.player.sprite, self.player.position)
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
+                elif event.key == pygame.K_SPACE:
+                    self.laser.on_init()
+                    self.player.fire()
+                    self._Display.blit(self.laser.laser_sprite, self.laser.laser_position)
         self.player.on_render()
         self.clock.tick(60)
 
     def start_game(self):
         self.on_init()
+        self.on_render()
         self.player.on_init()
         while self._running:
             self.on_loop()
