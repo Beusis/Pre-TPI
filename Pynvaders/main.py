@@ -38,7 +38,6 @@ class App:
 
     def on_render(self):
         self.player = GamePlay.Player.Player()
-        self.laser = GamePlay.Player.LaserShot()
 
     def on_loop(self):
         self._Display.blit(self._Background, [0, 0])
@@ -50,10 +49,6 @@ class App:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
-                elif event.key == pygame.K_SPACE:
-                    self.laser.on_init()
-                    self.player.fire()
-                    self._Display.blit(self.laser.laser_sprite, self.laser.laser_position)
         self.player.on_render()
         self.clock.tick(60)
 
