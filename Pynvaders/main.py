@@ -1,4 +1,4 @@
-# Pygame Pynvaders_old
+# Pygame Pynvaders
 #
 # Author : Loik Meylan
 # Version : 1.0_old
